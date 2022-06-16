@@ -96,9 +96,24 @@ print(revenue_df)
 revenue_df.to_csv("revenue_df.csv", index=None)
 
 # Generamos la tabla en sqlite3
-conn = sqlite3.Connection("Tesla.db")
 
-c = conn.cu
+connection = sqlite3.Connection("Tesla.db")
+
+c = connection.cursor()
+
+# Create table
+c.execute('''CREATE TABLE revenue
+(Date, Revenue)''')
+
+records = revenue_df.to_records(index=False)
+list_of_tuples = list(records)
+
+# Insert the values
+c.executemany('INSERT INTO revenue VALUES (?,?)', list_of_tuples)
+# Save (commit) the changes
+connection.commit()
+
+
 
 # c = connection.cursor()
 
