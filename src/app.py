@@ -102,7 +102,7 @@ connection = sqlite3.Connection("Tesla.db")
 c = connection.cursor()
 
 # Create table
-c.execute('''CREATE TABLE revenue
+c.execute('''CREATE TABLE IF NOT EXISTS revenue
 (Date, Revenue)''')
 
 records = revenue_df.to_records(index=False)
@@ -113,35 +113,7 @@ c.executemany('INSERT INTO revenue VALUES (?,?)', list_of_tuples)
 # Save (commit) the changes
 connection.commit()
 
-
-
-# c = connection.cursor()
-
-# # Create table
-# c.execute('''CREATE TABLE revenue
-#              (Date, Revenue)''')
-
-# records = revenue_df.to_records(index=False)
-# list_of_tuples = list(records)
-
-# # Insert the values
-# c.executemany('INSERT INTO revenue VALUES (?,?)', list_of_tuples)
-# # Save (commit) the changes
-# connection.commit()
-
-
-# print(date[0])
-# print(type(date[0]))
-# print(type(date[0].text))
-
-# class Point: 
-
-#     def __init__(self,x,y):
-#         self.x = x
-#         self.y = y
-    
-#     def __repr__(self):
-#         return f"Point({self.x},{self.y})"
-
-# my_point = Point(1,2)
-# type(str(my_point))
+print('---------------------- Cargo Datos e Imprimo tabla ----------------------\n ')
+for row in c.execute("SELECT * FROM revenue"):
+    print(row)
+connection.close()  
